@@ -232,13 +232,14 @@ for idx, row in df_filtered.iterrows():
     majority_acq = extracted_data.get("majority_acquired", "Unsure")
 
     opportunity_score = 0
-    if founder_owned == "Yes": opportunity_score += 2
-    if founder_mgmt == "Yes": opportunity_score += 1
+    if founder_owned == "Yes": opportunity_score += 3
+    if founder_mgmt == "Yes": opportunity_score += 2
+    if founder_on_board == "Yes": opportunity_score += 1
     if majority_acq == "No": opportunity_score += 1
 
     opportunity_level = (
-        "High" if opportunity_score >= 3 else
-        "Medium" if opportunity_score >= 2 else
+        "High" if opportunity_score >= 5 else
+        "Medium" if opportunity_score >= 3 else
         "Low"
     )
 

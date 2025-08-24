@@ -110,15 +110,28 @@ def process_companies(input_csv: str, output_csv: str, api_key: str) -> None:
         company_name = row["company_name"]
         web_site = row["web_site"]
 
-        prompt = (
+        prompt= (
             f"Please provide {company_name} workplace management company funding "
-            f"history and current ownership structure. Be as specific and detailed as possible. "
-            f"Website is {web_site}."
+            f"history and current ownership structure. Check if the company undergo a majority acquisition."
+            f"Website is {web_site}. Specify who is/are the founders. "
+            f"Include current investors and board of directors."
+            f"Be as specific and detailed as possible. "
+            f"Try to obtain a list of it's leadership, including their job titles. Use the "
+            f"specific website provided for this."
+            f"Try searching on a section called Leadership or in the About "
+            f"section, look for 'The Team' or 'Leadership' or under a section called 'Company' or under 'About Us' or under 'Who we are' or under About-->Leadership"
+            f"or use your common sense to search the website."
+            f"If you still don't find any leadership information, try looking for it in other sources. "
+            f"First source you should look at is LinkedIn, search for the company and get the first 10 people "
+            f"with Leadership roles that appear as People with their job titles."
         )
+
+
         print(f"Processing {company_name}...")
 
         try:
             content, urls = query_perplexity_api(prompt, api_key)
+            print(content)
             content_with_inline_urls = _inline_replace_citation_numbers(content, urls)
             llm_responses.append(content_with_inline_urls)
             llm_sources.append(" | ".join(urls))
@@ -142,3 +155,4 @@ if __name__ == "__main__":
     INPUT_CSV = "step_1_input_companies_data.csv"
     OUTPUT_CSV = "step_1_output_companies_with_llm_generated_summaries.csv"
     process_companies(INPUT_CSV, OUTPUT_CSV, API_KEY)
+
